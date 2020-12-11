@@ -8,6 +8,7 @@ Projeto que consiste em uma API para criação de pedido e manipulação de status
 - Sqlite
 - Flunt Validation
 - Swagger
+- xUnit e Moq 
 
 # Arquitetura
 - Arquitetura multicamada
