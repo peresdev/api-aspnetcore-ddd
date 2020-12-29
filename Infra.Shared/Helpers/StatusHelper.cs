@@ -3,6 +3,7 @@ using MercadoEletronico.Domain.Enums;
 using MercadoEletronico.Domain.Models.Pedido;
 using MercadoEletronico.Domain.Models.Status;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Infra.Shared.Helpers
 {
@@ -10,53 +11,44 @@ namespace Infra.Shared.Helpers
     {
         public static List<string> SetStatus(PedidoModel pedido, CreateStatusModel statusModel) {
 
-            var statuses = new List<string>();
-
-            // Status PEDIDO INVÁLIDO
-            if(pedido.Id == 0)
+            var rules = new Dictionary<string, bool>
             {
-                statuses.Add(Status.CodigoPedidoInvalido.GetDescription());
-                return statuses;
-            }
+                // Status PEDIDO INVÁLIDO
+                { Status.CodigoPedidoInvalido.GetDescription(), pedido.Id == 0 },
 
-            // Status REPROVADO
-            if (statusModel.Status == Status.Reprovado.GetDescription())
-            {
-                statuses.Add(Status.Reprovado.GetDescription());
-                return statuses;
-            }
+                // Status REPROVADO
+                { Status.Reprovado.GetDescription(), statusModel.Status == Status.Reprovado.GetDescription() },
 
-            // Status APROVADO
-            if (statusModel.Status == Status.Aprovado.GetDescription())
-            {
-                if (statusModel.ItensAprovados == pedido.QuantidadeItensPedido &&
-                    statusModel.ValorAprovado == pedido.ValorTotalPedido)
+                // Status APROVADO
                 {
-                    statuses.Add(Status.Aprovado.GetDescription());
-                }
-
-                if (statusModel.ValorAprovado < pedido.ValorTotalPedido)
+                    Status.Aprovado.GetDescription(),
+                    statusModel.Status == Status.Aprovado.GetDescription()
+                && statusModel.ItensAprovados == pedido.QuantidadeItensPedido
+                && statusModel.ValorAprovado == pedido.ValorTotalPedido
+                },
                 {
-                    statuses.Add(Status.AprovadoValorMenor.GetDescription());
-                }
-
-                if (statusModel.ItensAprovados < pedido.QuantidadeItensPedido)
+                    Status.AprovadoValorMenor.GetDescription(),
+                    statusModel.Status == Status.Aprovado.GetDescription()
+                && statusModel.ValorAprovado < pedido.ValorTotalPedido
+                },
                 {
-                    statuses.Add(Status.AprovadoQuantidadeMenor.GetDescription());
-                }
-
-                if (statusModel.ValorAprovado > pedido.ValorTotalPedido)
+                    Status.AprovadoQuantidadeMenor.GetDescription(),
+                    statusModel.Status == Status.Aprovado.GetDescription()
+                && statusModel.ItensAprovados < pedido.QuantidadeItensPedido
+                },
                 {
-                    statuses.Add(Status.AprovadoValorMaior.GetDescription());
-                }
-
-                if (statusModel.ItensAprovados > pedido.QuantidadeItensPedido)
+                    Status.AprovadoValorMaior.GetDescription(),
+                    pedido.Id > 0 && statusModel.Status == Status.Aprovado.GetDescription()
+                && statusModel.ValorAprovado > pedido.ValorTotalPedido
+                },
                 {
-                    statuses.Add(Status.AprovadoQuantidadeMaior.GetDescription());
+                    Status.AprovadoQuantidadeMaior.GetDescription(),
+                    pedido.Id > 0 && statusModel.Status == Status.Aprovado.GetDescription()
+                && statusModel.ItensAprovados > pedido.QuantidadeItensPedido
                 }
-            }
+            };
 
-            return statuses;
+            return rules.Where(it => it.Value == true).Select(it => it.Key.ToString()).ToList();
         }
     }
 }
