@@ -11,44 +11,44 @@ namespace Infra.Shared.Helpers
     {
         public static List<string> SetStatus(PedidoModel pedido, CreateStatusModel statusModel) {
 
-            var rules = new Dictionary<string, bool>
+            var rules = new Dictionary<Status, bool>
             {
                 // Status PEDIDO INVÁLIDO
-                { Status.CodigoPedidoInvalido.GetDescription(), pedido.Id == 0 },
+                { Status.CodigoPedidoInvalido, pedido.Id == 0 },
 
                 // Status REPROVADO
-                { Status.Reprovado.GetDescription(), statusModel.Status == Status.Reprovado.GetDescription() },
+                { Status.Reprovado, statusModel.Status == Status.Reprovado.GetDescription() },
 
                 // Status APROVADO
                 {
-                    Status.Aprovado.GetDescription(),
+                    Status.Aprovado,
                     statusModel.Status == Status.Aprovado.GetDescription()
                 && statusModel.ItensAprovados == pedido.QuantidadeItensPedido
                 && statusModel.ValorAprovado == pedido.ValorTotalPedido
                 },
                 {
-                    Status.AprovadoValorMenor.GetDescription(),
+                    Status.AprovadoValorMenor,
                     statusModel.Status == Status.Aprovado.GetDescription()
                 && statusModel.ValorAprovado < pedido.ValorTotalPedido
                 },
                 {
-                    Status.AprovadoQuantidadeMenor.GetDescription(),
+                    Status.AprovadoQuantidadeMenor,
                     statusModel.Status == Status.Aprovado.GetDescription()
                 && statusModel.ItensAprovados < pedido.QuantidadeItensPedido
                 },
                 {
-                    Status.AprovadoValorMaior.GetDescription(),
+                    Status.AprovadoValorMaior,
                     pedido.Id > 0 && statusModel.Status == Status.Aprovado.GetDescription()
                 && statusModel.ValorAprovado > pedido.ValorTotalPedido
                 },
                 {
-                    Status.AprovadoQuantidadeMaior.GetDescription(),
+                    Status.AprovadoQuantidadeMaior,
                     pedido.Id > 0 && statusModel.Status == Status.Aprovado.GetDescription()
                 && statusModel.ItensAprovados > pedido.QuantidadeItensPedido
                 }
             };
 
-            return rules.Where(it => it.Value == true).Select(it => it.Key.ToString()).ToList();
+            return rules.Where(it => it.Value == true).Select(it => it.Key.GetDescription().ToString()).ToList();
         }
     }
 }
