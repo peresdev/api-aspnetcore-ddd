@@ -1,10 +1,10 @@
 # API ME
-Projeto que consiste em uma API para criação de pedido e manipulação de status
+Projeto que consiste em uma API para criaÃ§Ã£o de pedido e manipulaÃ§Ã£o de status
 
 # Tecnologias/bibliotecas utilizadas
 - ASP.NET Core 3.1
 - Entity Framework Core 3.1.5
-- Injeção de dependência (DI) nativa .NET Core
+- InjeÃ§Ã£o de dependÃªncia (DI) nativa .NET Core
 - Sqlite
 - Flunt Validation
 - Swagger
@@ -12,7 +12,7 @@ Projeto que consiste em uma API para criação de pedido e manipulação de status
 
 # Arquitetura
 - Arquitetura multicamada
-- Princípios SOLID
+- PrincÃ­pios SOLID
 - Clean Code
 - Domain Driven Design (DDD)
 - Domain Validations
@@ -20,16 +20,16 @@ Projeto que consiste em uma API para criação de pedido e manipulação de status
 - Repository Pattern e Notification Pattern
 
 # Banco de dados - Sqlite
-- O banco de dados está localizado no caminho: MercadoEletronico.Application\MercadoEletronico.db
+- O banco de dados estÃ¡ localizado no caminho: MercadoEletronico.Application\MercadoEletronico.db
 
 # Consumir API
 - Swagger: https://localhost:44374/swagger
 
-# Possíveis melhorias
-- Implementar persistência dos status no banco de dados;
-- Implementar testes de integração (Integration tests);
+# PossÃ­veis melhorias
+- Implementar persistÃªncia dos status no banco de dados;
+- Implementar testes de integraÃ§Ã£o (Integration tests);
 - Implementar testes de stress (Stress testing);
-- Adicionar conteinerização (Docker / Kubernetes) ao projeto.
+- Adicionar conteinerizaÃ§Ã£o (Docker / Kubernetes) ao projeto.
 
 # Autor
-Leandro Peres Gonçalves
+Leandro Peres GonÃ§alves
